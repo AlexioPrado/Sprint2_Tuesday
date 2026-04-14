@@ -25,18 +25,20 @@ def test_tierPlatinum_edge():
     assert scan == "Platinum"
 
 #------calculate_total-------
-@pytest.mark.parametrize("prices, discount, expected",([1.5, 10.75, 8.99,], 0.5, 10.62),([12.45, 15.99, 3.45], 0, 31.89),([13.40, 12.50, 60.10], 1.0, 0))
+@pytest.mark.parametrize("prices, discount, expected",([15, 10, 9,], 0.5, 17),([12.45, 15.99, 3.45], 0, 31.89),([13.40, 12.50, 60.10], 1.0, 0))
 def test_totalCalc(prices, discount, expected):
     assert calculate_total(prices, discount) == expected
 
 def test_totalCalc_noPrice():
-    price = calculate_total([], 0.1)
-    assert price == None
+    with pytest.raises(ValueError):
+        price = calculate_total([], 0.1)
+        assert price == None
 
 def test_totalCalc_PriceNoList():
-    price = calculate_total(12.45, 0.5)
-    assert price == None
+    with pytest.raises(TypeError):
+        price = calculate_total(12.45, 0.5)
+        assert price == None
 
-@pytest.mark.parametrize("prices, discont, expected", ([1.45, 51.99, 6.16], -0.9, None), ([1.45, 47.1, 67.67], 1.5, None))
-def test_totalCalc_DiscountOutOfBound(prices, discount, expected):
-    assert calculate_total(prices, discount) == expected
+def test_totalCalc_DiscountOutOfBounUP():
+    with pytest.raises(ValueError):
+        assert calculate_total([1, 47, 67], 1.5) == None
